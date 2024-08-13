@@ -1,0 +1,8 @@
+.cache/
+
+config.json
+
+assets/
+.venv/
+.idea/
+__pycache__/
