@@ -6,3 +6,8 @@ assets/
 .venv/
 .idea/
 __pycache__/
+
+dist/
+build/
+
+run.exe
