@@ -3,35 +3,29 @@ import requests
 import streamlit as st
 
 invalid_symbols = ["/", "\\", "|", ":", "*", "?", "“", "<", ">"]
-CACHE_FILE = ".cache/download.png"
+CACHE_FILE = ".cache/download.jpg"
 
 
 st.title("Создание новой картинки")
 
 st.subheader("Настройки генерации")
 description = st.text_input("Описание")
+width = st.slider("Ширина", 256, 1024, 1024)
+height = st.slider("Высота", 256, 1024, 1024)
 btn = st.button("Сгенерировать")
 
 if btn:
     if description == "":
         st.error("Пустое описание")
     else:
-        try:
-            resp = requests.post(st.session_state['settings']['server'] + "image/", json={
-                "description": description,
-            })
-        except requests.exceptions.ConnectionError:
-            st.error(
-                "The server did not respond to the request, please make sure that you entered the correct address in the Settings"
-            )
-        else:
-            if resp.status_code == 200:
-                with open(CACHE_FILE, 'wb') as file:
-                    file.write(resp.content)
-                st.session_state["image_generation_show"] = True
-            else:
-                st.error("Failed to get information from the server")
 
+        img = st.session_state["img_gen_api"].generate(description, width=width, height=height)
+        if img is None:
+            st.error("Ошибка генерации изображения")
+        else:
+            with open(CACHE_FILE, 'wb') as file:
+                file.write(img)
+            st.session_state["image_generation_show"] = True
 
 if st.session_state["image_generation_show"]:
     st.subheader("Последний несохраненный результат")

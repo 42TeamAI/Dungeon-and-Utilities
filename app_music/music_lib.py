@@ -42,10 +42,10 @@ if "current_music" not in st.session_state:
 
 if st.session_state["current_music"] != "":
     with st.container(border=True):
-        st.subheader("Active composition")
+        st.subheader("Активная мелодия")
         st.write(st.session_state["current_music"].replace(".mp3", ""))
 
-        vol = st.slider("Volume", 0.0, 1.0, 1.0)
+        vol = st.slider("Громкость", 0.0, 1.0, 1.0)
 
         mixer.music.set_volume(vol)
 
@@ -56,7 +56,7 @@ if st.session_state["current_music"] != "":
         else:
             st.button("Продолжить", on_click=play)
 
-        st.button("Выключить", on_click=unload)
+        st.button("Убрать с фона", on_click=unload)
 
 
 st.subheader("Доступные мелодии")

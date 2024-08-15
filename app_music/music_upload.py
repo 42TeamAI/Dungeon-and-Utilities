@@ -9,7 +9,7 @@ uploader = st.file_uploader(
     accept_multiple_files=True,
 )
 
-btn = st.button("Upload")
+btn = st.button("Загрузить")
 
 if btn:
     for upload in uploader:

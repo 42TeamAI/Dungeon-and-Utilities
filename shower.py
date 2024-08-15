@@ -20,7 +20,7 @@ class ImageShower:
             if find:
                 temp = "<img src={{ url_for('static', filename='" + file_name + "') }} width='100%'>"
             else:
-                temp = "The DM has not sent one picture yet"
+                temp = "Ведущий не отправил ни одной картинки"
             return render_template_string(temp)
 
     def run(self, port):

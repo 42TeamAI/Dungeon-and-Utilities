@@ -1,10 +1,22 @@
 import streamlit as st
 
-st.title("Help page")
-st.write("Hello, this is a reference guide for the functions of this application.")
+st.title("Добро пожаловать в помощник ведущего")
+st.write("Это небольшое руководство, которое поможет вам разобраться, как работать с данным приложением.")
 
-st.header("Start play")
+st.header("Музыка")
 st.write("""
-In order to start using all the features of the program, you need to run DMHelperServer on any available computer (you can on the same computer where this application is running). After that, please enter the message that the server wrote to you in the "Server URL" field in the Settings section of this application.  
-Also in the Settings section, you can configure folders where created or uploaded images and music will be saved.
+Во время подготовки к предстоящей встрече (или прямо во время игры) вы можете загрузить музыку, 
+которую будете использовать во время игры во вкладке 'Загрузка музыки с устройства' в разделе 'Музыка'. 
+В том же разделе вы можете сгенерировать мелодию для игры, основываясь на ситуации, с которой столкнутся игроки.
+Для этого перейдите на вкладку 'Создание новой музыки' и введите описание ситуации, а также продолжительность композиции.
+Во вкладке 'Галерея композиций' вы можете просмотреть загруженную и созданную музыку и отправить мелодию играть в фоне. 
+Выбранная композиция будет проигрываться по кругу на заднем фоне, вы сможете настроить её громкость или поставить в нужный момент на паузу. 
 """)
+
+st.subheader("Изображения")
+st.write("""
+По аналогии с разделом 'Музыка' вы можете загрузить уже подготовленные картинки во вкладке 'Загрузка изображений с устройства' 
+и создать новые во вкладке 'Создание новых картинок'. Также во вкладке 'Галерея картинок' вы можете отправлять картинки на устройства игроков, 
+если они подключены с вами к одной локальной сети. 
+""")
+
