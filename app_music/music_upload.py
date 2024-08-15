@@ -1,10 +1,10 @@
 import streamlit as st
 
-st.title("Uploading composition")
+st.title("Загрузка музыкальных файлов")
 available = ["mp3", "wav", "aac", "aiff", "dsd", "flac", "mqa", "ogg"]
 
 uploader = st.file_uploader(
-    "Upload new composition",
+    "Загрузить файлы",
     type=available,
     accept_multiple_files=True,
 )
@@ -18,6 +18,6 @@ if btn:
             file.write(data)
     else:
         if len(uploader) > 0:
-            st.success("Files saved" if len(uploader) > 1 else "File saved")
+            st.success("Файлы сохранены" if len(uploader) > 1 else "Файл сохранен")
         else:
-            st.error("No files selected")
+            st.error("Ни одного файла не выбрано")

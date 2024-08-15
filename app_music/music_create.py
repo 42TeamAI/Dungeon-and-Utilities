@@ -5,19 +5,22 @@ import requests
 invalid_symbols = ["/", "\\", "|", ":", "*", "?", "“", "<", ">"]
 CACHE_FILE = ".cache/download.mp3"
 
-st.title("Create new music")
+st.title("Создание новой музыки")
 
-st.subheader("Generation settings")
+st.subheader("Настройки генерации")
 
-description = st.text_input("Situation description", type="default")
-duration = st.slider("Duration of composition, in seconds", 10, 60, 15)
-rephrase = st.checkbox("Rephrase yor description?", value=True, help="We use LLM to instruct more details from your description")
+description = st.text_input("Описание ситуации", type="default")
+duration = st.slider("Продолжительность мелодии, в секундах", 10, 60, 15)
+rephrase = st.checkbox("Извлечь детали из запроса", value=True, help="Мы используем LLM для извлечения большего количества деталей из вашего запроса и создания более качественной мелодии")
 
-btn = st.button("Send")
+if not rephrase:
+    st.write("Пожалуйста, вводите описание ситуации на английском, для улучшения генерации, если не хотите использовать данный параметр")
+
+btn = st.button("Сгенерировать")
 
 if btn:
     if description == "":
-        st.error("Empty description")
+        st.error("Пустое описание")
     else:
         try:
             resp = requests.post(st.session_state['settings']['server'] + "music/", json={
@@ -27,31 +30,32 @@ if btn:
             })
         except requests.exceptions.ConnectionError:
             st.error(
-                "The server did not respond to the request, please make sure that you entered the correct address in the Settings"
+                "Сервер не ответил на запрос, пожалуйста, убедитесь, что указанный в Настройках адрес верен"
             )
         else:
-            print(resp.status_code)
             if resp.status_code == 200:
                 with open(CACHE_FILE, 'wb') as file:
                     file.write(resp.content)
                 st.session_state["music_generation_show"] = True
+            elif resp.status_code == 501:
+                st.error("Ключ OpenAI закончился или отсутствует")
             else:
-                st.error("Failed to get information from the server")
+                st.error("Сервер прислал не валидный ответ")
 
 
 if st.session_state['music_generation_show']:
 
-    st.subheader("Last unsaved result")
+    st.subheader("Последний несохраненный результат")
     st.audio(CACHE_FILE)
 
-    name = st.text_input("Composition name")
-    save = st.button("Save composition")
+    name = st.text_input("Название мелодии")
+    save = st.button("Сохранить мелодию")
 
     if save:
         if name == "":
-            st.error("Please, enter the name for composition")
+            st.error("Пустое название")
         elif any(symbol in name for symbol in invalid_symbols):
-            st.error("Invalid symbols, please don`t use / \\ | : * ? “ < > in name")
+            st.error("Некорректные символы в имени, пожалуйста не используйте / \\ | : * ? “ < >")
         else:
             with open(CACHE_FILE, 'rb') as file:
                 data = file.read()
@@ -59,5 +63,5 @@ if st.session_state['music_generation_show']:
                 file.write(data)
 
             os.remove(CACHE_FILE)
-            st.success("Saved")
+            st.success("Сохранено")
             st.session_state['music_generation_show'] = False

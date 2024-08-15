@@ -11,12 +11,20 @@ def get_local_ip():
 
 available = ["png", "jpg", "webp", "svg", "jpeg"]
 
-st.title("Images gallery")
-st.write(f"If your players are connected to the same network with you, ask them to go to the address http://{get_local_ip()}:{st.session_state['settings']['port']}/ so that they can see the images that you show.")
+st.title("Галерея изображений")
+st.write(f"Если вы и ваши игроки подключены к одной локальной сети, попросите их перейти по адресу http://{get_local_ip()}:{st.session_state['settings']['port']}/ или отсканировать QR-код ниже, чтобы они могли видеть картинки, которые вы показываете")
 
+
+def qr():
+    st.session_state["qr_code"] = not st.session_state["qr_code"]
+
+
+qr_btn = st.button("Скрыть QR-код" if st.session_state["qr_code"] else "Показать QR-код", on_click=qr)
+if st.session_state["qr_code"]:
+    st.image(".cache/qrcode.png")
 
 st.session_state["width"] = 400
-width = st.slider("Images width", 100, 1000,  st.session_state["width"])
+width = st.slider("Ширина изображений", 100, 1000,  st.session_state["width"])
 
 
 def show(file_name):
@@ -44,6 +52,6 @@ for name in os.listdir(st.session_state["settings"]["image_folder"]):
             continue
         with st.container(border=True):
             st.image(st.session_state["settings"]["image_folder"] + name, width=width)
-            if st.button("Show to players", key=name, on_click=show, args=[name]):
-                st.success("Showed")
-            st.button("Delete", on_click=delete, args=[name], key=name+"_delete")
+            if st.button("Показать игрокам", key=name, on_click=show, args=[name]):
+                st.success("Показано")
+            st.button("Удалить", on_click=delete, args=[name], key=name+"_delete")

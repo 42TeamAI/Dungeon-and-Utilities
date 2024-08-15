@@ -1,6 +1,5 @@
 import os
 from threading import Thread
-
 from flask import Flask, render_template_string
 
 
@@ -19,9 +18,9 @@ class ImageShower:
                     file_name = name
                     find = True
             if find:
-                temp = "<img src={{ url_for('static', filename='" + file_name + "') }}>"
+                temp = "<img src={{ url_for('static', filename='" + file_name + "') }} width='100%'>"
             else:
-                temp = "The master has not sent you more than one picture yet"
+                temp = "The DM has not sent one picture yet"
             return render_template_string(temp)
 
     def run(self, port):

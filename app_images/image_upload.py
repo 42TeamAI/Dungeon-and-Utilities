@@ -1,15 +1,15 @@
 import streamlit as st
 
-st.title("Uploading images")
+st.title("Загрузка картинок с устройства")
 available = ["png", "jpg", "webp", "svg", "jpeg"]
 
 uploader = st.file_uploader(
-    "Upload new images",
+    "Загрузить изображения",
     type=available,
     accept_multiple_files=True,
 )
 
-btn = st.button("Upload")
+btn = st.button("Загрузить")
 
 if btn:
     for upload in uploader:
@@ -18,6 +18,6 @@ if btn:
             file.write(data)
     else:
         if len(uploader) > 0:
-            st.success("Files saved" if len(uploader) > 1 else "File saved")
+            st.success("Файлы сохранены" if len(uploader) > 1 else "Файл сохранен")
         else:
-            st.error("No files selected")
+            st.error("Не выбрано ни одного файла")

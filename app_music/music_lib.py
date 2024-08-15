@@ -2,7 +2,7 @@ import streamlit as st
 from pygame import mixer
 import os
 
-st.title("Compositions")
+st.title("Галерея композиций")
 
 available = ["mp3", "wav", "aac", "aiff", "dsd", "flac", "mqa", "ogg"]
 
@@ -52,14 +52,14 @@ if st.session_state["current_music"] != "":
         col1, col2, col3 = st.columns([1, 1, 1])
 
         if st.session_state["music_is_play"]:
-            st.button("Pause", on_click=pause)
+            st.button("Пауза", on_click=pause)
         else:
-            st.button("Play", on_click=play)
+            st.button("Продолжить", on_click=play)
 
-        st.button("Unload", on_click=unload)
+        st.button("Выключить", on_click=unload)
 
 
-st.subheader("Available compositions")
+st.subheader("Доступные мелодии")
 for name in os.listdir(st.session_state["settings"]["music_folder"]):
     if os.path.isfile(st.session_state["settings"]["music_folder"] + name) and name != st.session_state['current_music']:
         extend = name[name.rfind(".") + 1:].lower()
@@ -68,5 +68,5 @@ for name in os.listdir(st.session_state["settings"]["music_folder"]):
         with st.container(border=True):
             st.write(name)
             st.audio(st.session_state["settings"]["music_folder"] + name, loop=True)
-            st.button("Play on the background", key=name, on_click=select, args=[name])
-            st.button("Delete", on_click=delete, args=[name], key=name + "_delete")
+            st.button("Включить на заднем фоне", key=name, on_click=select, args=[name])
+            st.button("Удалить", on_click=delete, args=[name], key=name + "_delete")

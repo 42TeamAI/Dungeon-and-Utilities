@@ -6,15 +6,15 @@ invalid_symbols = ["/", "\\", "|", ":", "*", "?", "“", "<", ">"]
 CACHE_FILE = ".cache/download.png"
 
 
-st.title("Create new picture")
+st.title("Создание новой картинки")
 
-st.subheader("Generation settings")
-description = st.text_input("Description")
-btn = st.button("Send")
+st.subheader("Настройки генерации")
+description = st.text_input("Описание")
+btn = st.button("Сгенерировать")
 
 if btn:
     if description == "":
-        st.error("Empty description")
+        st.error("Пустое описание")
     else:
         try:
             resp = requests.post(st.session_state['settings']['server'] + "image/", json={
@@ -34,17 +34,17 @@ if btn:
 
 
 if st.session_state["image_generation_show"]:
-    st.subheader("Last unsaved result")
+    st.subheader("Последний несохраненный результат")
     st.image(CACHE_FILE)
 
-    name = st.text_input("Image name")
-    save = st.button("Save image", key="save-image")
+    name = st.text_input("Название картинки")
+    save = st.button("Сохранить изображение", key="save-image")
 
     if save:
         if name == "":
-            st.error("Please, enter the name for image")
+            st.error("Пустое название")
         elif any(symbol in name for symbol in invalid_symbols):
-            st.error("Invalid symbols, please don`t use / \\ | : * ? “ < > in name")
+            st.error("Некорректные символы в имени, пожалуйста не используйте / \\ | : * ? “ < >")
         else:
             with open(CACHE_FILE, 'rb') as file:
                 data = file.read()
@@ -52,5 +52,5 @@ if st.session_state["image_generation_show"]:
                 file.write(data)
 
             os.remove(CACHE_FILE)
-            st.success("Saved")
+            st.success("Сохранено")
             st.session_state["image_generation_show"] = False

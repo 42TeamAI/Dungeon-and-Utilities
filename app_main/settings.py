@@ -1,19 +1,28 @@
 import os
 import streamlit as st
 import json
+import socket
+import qrcode
 
-st.title("Settings")
 
-server = st.text_input("Server URL", value=st.session_state["settings"]["server"], help="")
-music_folder = st.text_input("Name of music folder", value=st.session_state["settings"]["music_folder"])
-image_folder = st.text_input("Name of images folder", value=st.session_state["settings"]["image_folder"])
-port = st.number_input("Port for showing image", value=st.session_state["settings"]["port"], help="The port on which the application will be launched")
+def get_local_ip():
+    hostname = socket.gethostname()
+    local_ip = socket.gethostbyname(hostname)
+    return local_ip
 
-btn = st.button("Save")
+
+st.title("Настройки")
+
+server = st.text_input("URL сервера", value=st.session_state["settings"]["server"], help="")
+music_folder = st.text_input("Название папки для музыки", value=st.session_state["settings"]["music_folder"])
+image_folder = st.text_input("Название папки для картинок", value=st.session_state["settings"]["image_folder"])
+port = st.number_input("Порт, на котором будут показываться картинки игрокам", value=st.session_state["settings"]["port"], help="The port on which the application will be launched")
+
+btn = st.button("Сохранить")
 
 if btn:
     if "http" not in server:
-        st.error("Please, use full URL to server, example: http://127.0.0.1:8000/")
+        st.error("Пожалуйста, используйте полный URL, например: http://127.0.0.1:8000/")
     else:
         if server[-1] != "/":
             server += "/"
@@ -38,5 +47,9 @@ if btn:
         with open("config.json", 'w') as file:
             json.dump(st.session_state['settings'], file)
 
-        st.success("Saved")
+        url = f"http://{get_local_ip()}:{st.session_state['settings']['port']}/"
+        img = qrcode.make(url)
+        img.save(".cache/qrcode.png")
+
+        st.success("Сохранено")
 
